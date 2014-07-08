@@ -7,38 +7,13 @@ var fs = require('fs');
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://localhost/app-store');
 var Application = require('./app/models/application');
+var Comment = require('./app/models/comment');
 
 app.use(bodyParser());
 app.use(busboy());
 
 var port = process.env.PORT || 3000;
 var router = express.Router();
-
-// Main
-router.get('/', function(req, res) {
-  res.json({ message: 'hooray! welcome to our api!' }); 
-});
-
-// Upload
-app.route('/api/applications/:application_id/upload')
-  .post(function (req, res) {
-      var fstream;
-      req.pipe(req.busboy);
-      req.busboy.on('file', function (fieldname, file) {
-          fstream = fs.createWriteStream(__dirname + '/data/' + req.params.application_id);
-          file.pipe(fstream);
-          fstream.on('close', function () {    
-            res.json({ message: 'Binary uploaded!' });
-          });
-      });
-  });
-
-// Download
-app.route('/api/applications/:application_id/download')
-  .get(function(req, res) {
-    var file = __dirname + '/data/' + req.params.application_id;
-    res.download(file); 
-  });
 
 // Applications Endpoints
 router.route('/applications')
@@ -128,6 +103,92 @@ router.route('/applications/:application_id')
   .delete(function(req, res) {
     Application.remove({
       _id: req.params.application_id
+    }, function(err) {
+      if(err) {
+        res.send(err);
+      }
+
+      res.json({ message: 'Successfully deleted' });
+    });
+  });
+
+// Application Upload
+router.route('/applications/:application_id/upload')
+  .post(function (req, res) {
+      var fstream;
+      req.pipe(req.busboy);
+      req.busboy.on('file', function (fieldname, file) {
+          fstream = fs.createWriteStream(__dirname + '/data/' + req.params.application_id);
+          file.pipe(fstream);
+          fstream.on('close', function () {
+            res.json({ message: 'Binary uploaded!' });
+          });
+      });
+  });
+
+// Application Download
+router.route('/applications/:application_id/download')
+  .get(function(req, res) {
+    var file = __dirname + '/data/' + req.params.application_id;
+    res.download(file);
+  });
+
+// Application Comments
+router.route('/applications/:application_id/comments')
+  .post(function(req, res) {
+
+    var comment = new Comment();
+    comment.description = req.body.description;
+    comment.application_id = req.params.application_id;
+
+    comment.save(function(err) {
+      if(err){
+        res.send(err);
+      }
+      res.json(comment);
+    });
+  })
+  .get(function(req, res) {
+    Comment.find({application_id: req.params.application_id}, function(err, comments) {
+      if(err) {
+        res.send(err);
+      }
+
+      res.json(comments);
+    });
+  });
+
+// Application Comments Endpoints
+router.route('/comments/:comment_id')
+  .get(function(req, res) {
+    Comment.findById(req.params.comment_id, function(err, comment) {
+      if(err) {
+        res.send(err);
+      }
+
+      res.json(comment);
+    });
+  })
+  .put(function(req, res) {
+    Comment.findById(req.params.comment_id, function(err, comment){
+      if(err) {
+        res.send(err);
+      }
+
+      comment.description = req.body.description;
+
+      comment.save(function(err) {
+        if(err) {
+          res.send(err);
+        }
+
+        res.json(comment);
+      });
+    });
+  })
+  .delete(function(req, res) {
+    Comment.remove({
+      _id: req.params.comment_id
     }, function(err) {
       if(err) {
         res.send(err);
