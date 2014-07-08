@@ -1,14 +1,15 @@
 API Spec
 ====
 
-POST   /app
-PUT    /app
-GET    /app/{appId}
-DELETE /app/{appId}
-GET    /app/{appId}/downloadBinary
-GET    /app/{appId}/comments
+GET    /applications
+POST   /applications
+PUT    /applications
+GET    /applications/{applicationId}
+DELETE /applications/{applicationId}
+GET    /applications/{applicationId}/downloadBinary
+GET    /applications/{applicationId}/comments
 
-GET    /app/search?q=<term>&searchType=[name,description,author,price-range]&sortby=<name>
+GET    /applications/search?q=<term>&searchType=[name,description,author,price-range]&sortby=<name>
 
 POST   /comment
 GET    /comment

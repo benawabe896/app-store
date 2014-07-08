@@ -4,3 +4,5 @@ npm-debug.log
 coverage
 *.sw?
 .DS_Store
+aws.json
+/data/*
