@@ -46,12 +46,15 @@ router.route('/applications')
     
     var application = new Application();
     application.name = req.body.name;
+    application.description = req.body.description;
+    application.author = req.body.author;
+    application.price = req.body.price;
 
     application.save(function(err) {
       if(err){
         res.send(err);
       }
-      res.json({message: 'Application created!' });
+      res.json(application);
     });
   })
   .get(function(req, res) {
@@ -59,6 +62,23 @@ router.route('/applications')
       if(err) {
         res.send(err);
       }
+      res.json(applications);
+    });
+  });
+
+// Applications Search
+router.route('/applications/search')
+  .get(function(req, res){
+    var searchString = req.query.q;
+    var searchType = req.query.st || 'name';
+    var findParams= {};
+    findParams[searchType] = searchString;
+
+    Application.find(findParams, function(err, applications){
+      if (err) {
+        res.send(err);
+      }
+
       res.json(applications);
     });
   });
@@ -81,13 +101,16 @@ router.route('/applications/:application_id')
       }
 
       application.name = req.body.name;
+      req.body.description && (application.description = req.body.description);
+      req.body.author && (application.author = req.body.author);
+      req.body.price && (application.price = req.body.price);
 
       application.save(function(err) {
         if(err) {
           res.send(err);
         }
 
-        res.json({ message: 'Application updated!' });
+        res.json(application);
       });
     });
   })
