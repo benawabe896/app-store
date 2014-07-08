@@ -37,6 +37,45 @@ router.route('/applications')
 		});
 	});
 
+router.route('/applications/:application_id')
+	.get(function(req, res) {
+		Application.findById(req.params.application_id, function(err, application) {
+			if(err) {
+				res.send(err);
+			}
+
+			res.json(application);
+		});
+	})
+	.put(function(req, res) {
+		Application.findById(req.params.application_id, function(err, application){
+			if(err) {
+				res.send(err);
+			}
+
+			application.name = req.body.name;
+
+			application.save(function(err) {
+				if(err) {
+					res.send(err);
+				}
+
+				res.json({ message: 'Application updated!' });
+			});
+		});
+	})
+	.delete(function(req, res) {
+		Application.remove({
+			_id: req.params.application_id
+		}, function(err, application) {
+			if(err) {
+				res.send(err);
+			}
+
+			res.json({ message: 'Successfully deleted' });
+		});
+	});
+
 app.use('/api', router);
 
 app.listen(port);
