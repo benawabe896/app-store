@@ -69,12 +69,23 @@ router.route('/applications')
 // Applications Search
 router.route('/applications/search')
   .get(function(req, res){
-    var searchString = req.query.q;
-    var searchType = req.query.st || 'name';
-    var findParams= {};
-    findParams[searchType] = searchString;
 
-    Application.find(findParams, function(err, applications){
+    var queryParams= {};
+    var searchType = req.query.st || 'name';
+    switch(searchType){
+      case 'price':
+        var ranges = req.query.range.split('-');
+        queryParams[searchType] = {$gte: ranges[0], $lt: ranges[1]};
+        break;
+      case 'name':
+      case 'description':
+      case 'author':
+      case 'default':
+        queryParams[searchType] = {$regex: new RegExp(req.query.q, 'i')};
+        break;
+    }
+
+    Application.find(queryParams, function(err, applications){
       if (err) {
         res.send(err);
       }
