@@ -88,10 +88,6 @@ module.exports = function(router){
       });
     })
     .put(function(req, res) {
-      if(!req.body.name){
-        return res.send({error: 'Missing required parameters'});
-      }
-
       Application.findById(req.params.application_id, function(err, application){
         if(err) {
           return res.send(err);
@@ -101,7 +97,7 @@ module.exports = function(router){
           res.send({error: 'No application found with that Id'});
         }
 
-        application.name = req.body.name;
+        req.body.name && (application.name = req.body.name);
         req.body.description && (application.description = req.body.description);
         req.body.author && (application.author = req.body.author);
         req.body.price && (application.price = req.body.price);
