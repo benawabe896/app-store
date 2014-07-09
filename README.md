@@ -17,7 +17,7 @@ API Spec
 
 ### POST /applications
 #### Parameters
-| name          | required  | values  |
+| name          | required  | type  |
 | ------------- |:-------------:| -----| 
 | name     | yes | String | 
 | description      | yes      |  String |
@@ -36,9 +36,10 @@ API Spec
 }
 ```
 
-GET /applications/search
+### GET /applications/search
+
 #### Parameters
-| name          | required  | values  | defaults
+| name          | required  | type  | defaults
 | ------------- |:-------------:| -----|  ---- |
 | q     | yes | String |  |
 | searchField      | yes      |  String | name |
@@ -57,9 +58,49 @@ GET /applications/search
 ```
 
 
-## /applications/:application_id
-### GET
-### PUT
+### GET /applications/:application_id
+
+#### Parameters
+| name          | required  | type  | 
+| ------------- |:-------------:| -----|  
+| application_id     | yes | String | 
+
+#### Response
+```javascript
+{
+  "__v": 0
+  "price": 12.34
+  "author": "me"
+  "description": "Sample Description"
+  "name": "Angry Birds"
+  "_id": "53bca02feab2a10000d20807"
+}
+```
+
+
+### PUT /applications/:application_id
+
+#### Parameters
+| name          | required  | type  | 
+| ------------- |:-------------:| -----|  
+| application_id     | yes | String | 
+| name     | no | String | 
+| description     | no | String | 
+| author     | no | String | 
+| price     | no | Number | 
+
+#### Response
+```javascript
+{
+  "__v": 0
+  "price": 12.34
+  "author": "me"
+  "description": "Sample Description"
+  "name": "Angry Birds"
+  "_id": "53bca02feab2a10000d20807"
+}
+```
+
 ### DELETE
 
 ## /applications/:application_id/comments
