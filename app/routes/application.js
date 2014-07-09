@@ -50,7 +50,7 @@ module.exports = function(router){
 
       // Query Options
       var queryParams= {};
-      var searchType = req.query.st || 'name';
+      var searchType = req.query.searchField || 'name';
       queryParams[searchType] = {$regex: new RegExp(req.query.q, 'i')};
 
       if(searchType === 'price'){
