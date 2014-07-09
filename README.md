@@ -185,7 +185,7 @@ API Spec
 }
 ```
 
-### DELETE
+### DELETE /comments/:comment_id
 
 #### Response
 ```javascript
