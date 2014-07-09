@@ -6,7 +6,7 @@ module.exports = function(router){
     .get(function(req, res) {
       Comment.find(function(err, comments){
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
 
         res.json(comments);
@@ -18,7 +18,7 @@ module.exports = function(router){
     .get(function(req, res) {
       Comment.findById(req.params.comment_id, function(err, comment) {
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
 
         res.json(comment);
@@ -27,14 +27,18 @@ module.exports = function(router){
     .put(function(req, res) {
       Comment.findById(req.params.comment_id, function(err, comment){
         if(err) {
-          res.send(err);
+          return res.send(err);
+        }
+
+        if(!req.body.description){
+          return res.send({error: 'Missing required parameters'});
         }
 
         comment.description = req.body.description;
 
         comment.save(function(err) {
           if(err) {
-            res.send(err);
+            return res.send(err);
           }
 
           res.json(comment);
@@ -46,10 +50,10 @@ module.exports = function(router){
         _id: req.params.comment_id
       }, function(err) {
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
 
         res.json({ message: 'Successfully deleted' });
       });
     });
-}
+};

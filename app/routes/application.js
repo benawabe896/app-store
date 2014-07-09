@@ -7,11 +7,11 @@ module.exports = function(router){
     .post(function(req, res) {
       
       if(!req.body.name || !req.body.description || !req.body.author || !req.body.price){
-        res.send({error: 'Missing required parameters'});
+        return res.send({error: 'Missing required parameters'});
       }
 
       if(isNaN(req.body.price)){
-        res.send({error: 'Price is not a number'}); 
+        return res.send({error: 'Price is not a number'}); 
       }
 
       var application = new Application();
@@ -22,7 +22,7 @@ module.exports = function(router){
 
       application.save(function(err) {
         if(err){
-          res.send(err);
+          return res.send(err);
         }
         res.json(application);
       });
@@ -30,7 +30,7 @@ module.exports = function(router){
     .get(function(req, res) {
       Application.find(function(err, applications) {
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
         res.json(applications);
       });
@@ -40,7 +40,7 @@ module.exports = function(router){
   router.route('/applications/search')
     .get(function(req, res){
       if(!req.query.q){
-        res.send({error: 'q parameter required'}); 
+        return res.send({error: 'q parameter required'}); 
       }
 
       var queryParams= {};
@@ -49,21 +49,21 @@ module.exports = function(router){
 
       if(searchType === 'price'){
         if(!req.query.range){
-          res.send({error: 'Range parameters required for price search type'}); 
+          return res.send({error: 'Range parameters required for price search type'}); 
         }
         var ranges = req.query.range.split('-').map(function(range){
           return parseInt(range);
         }).sort();
 
         if(ranges.length !== 2 || isNaN(ranges[0]) || isNaN(ranges[1])){
-          res.send({error: 'Invalid Range Values'});
+          return res.send({error: 'Invalid Range Values'});
         }
         queryParams[searchType] = {$gte: ranges[0], $lt: ranges[1]};
       }
 
       Application.find(queryParams, function(err, applications){
         if (err) {
-          res.send(err);
+          return res.send(err);
         }
 
         res.json(applications);
@@ -75,7 +75,7 @@ module.exports = function(router){
     .get(function(req, res) {
       Application.findById(req.params.application_id, function(err, application) {
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
 
         res.json(application || {error: 'Appication Id not found'});
@@ -83,12 +83,12 @@ module.exports = function(router){
     })
     .put(function(req, res) {
       if(!req.body.name){
-        res.send({error: 'Missing required parameters'});
+        return res.send({error: 'Missing required parameters'});
       }
 
       Application.findById(req.params.application_id, function(err, application){
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
 
         application.name = req.body.name;
@@ -98,7 +98,7 @@ module.exports = function(router){
 
         application.save(function(err) {
           if(err) {
-            res.send(err);
+            return res.send(err);
           }
 
           res.json(application);
@@ -110,7 +110,7 @@ module.exports = function(router){
         _id: req.params.application_id
       }, function(err) {
         if(err) {
-          res.send(err);
+          return res.send(err);
         }
 
         res.json({ message: 'Successfully deleted' });
