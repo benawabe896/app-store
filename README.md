@@ -60,11 +60,6 @@ API Spec
 
 ### GET /applications/:application_id
 
-#### Parameters
-| name          | required  | type  | 
-| ------------- |:-------------:| -----|  
-| application_id     | yes | String | 
-
 #### Response
 ```javascript
 {
@@ -83,7 +78,6 @@ API Spec
 #### Parameters
 | name          | required  | type  | 
 | ------------- |:-------------:| -----|  
-| application_id     | yes | String | 
 | name     | no | String | 
 | description     | no | String | 
 | author     | no | String | 
@@ -101,9 +95,32 @@ API Spec
 }
 ```
 
-### DELETE
+### DELETE /applications/:application_id
 
-## /applications/:application_id/comments
+#### Response
+```javascript
+{
+  "message":"Successfully deleted"
+}
+```
+
+### POST /applications/:application_id/comments
+
+#### Parameters
+| name          | required  | type  | 
+| ------------- |:-------------:| -----|  
+| description     | yes | String | 
+
+#### Response
+```javascript
+{
+  "__v":0,
+  "application_id":"53bc99b735e78500005ff250",
+  "description":"Test Comment",
+  "_id":"53bca4ad62acc3970a321162"
+}
+```
+
 ### POST
 ### GET
 
