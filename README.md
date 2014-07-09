@@ -1,7 +1,7 @@
 API Spec
 ====
 
-### GET /applications
+### GET /api/applications
 
 #### Response
 ```javascript
@@ -15,7 +15,7 @@ API Spec
 }]
 ```
 
-### POST /applications
+### POST /api/applications
 #### Parameters
 | name          | required  | type  |
 | ------------- |:-------------:| -----| 
@@ -36,7 +36,7 @@ API Spec
 }
 ```
 
-### GET /applications/search
+### GET /api/applications/search
 
 #### Parameters
 | name          | required  | type  | defaults
@@ -58,7 +58,7 @@ API Spec
 ```
 
 
-### GET /applications/:application_id
+### GET /api/applications/:application_id
 
 #### Response
 ```javascript
@@ -73,7 +73,7 @@ API Spec
 ```
 
 
-### PUT /applications/:application_id
+### PUT /api/applications/:application_id
 
 #### Parameters
 | name          | required  | type  | 
@@ -95,7 +95,7 @@ API Spec
 }
 ```
 
-### DELETE /applications/:application_id
+### DELETE /api/applications/:application_id
 
 #### Response
 ```javascript
@@ -104,7 +104,7 @@ API Spec
 }
 ```
 
-### POST /applications/:application_id/upload
+### POST /api/applications/:application_id/upload
 
 #### Response
 ```javascript
@@ -113,9 +113,9 @@ API Spec
 }
 ```
 
-### GET /applications/:application_id/download
+### GET /api/applications/:application_id/download
 
-### POST /applications/:application_id/comments
+### POST /api/applications/:application_id/comments
 
 #### Parameters
 | name          | required  | type  | 
@@ -132,7 +132,7 @@ API Spec
 }
 ```
 
-### GET /applications/:application_id/comments
+### GET /api/applications/:application_id/comments
 
 #### Response
 ```javascript
@@ -144,7 +144,7 @@ API Spec
 }
 ```
 
-### GET /comments
+### GET /api/comments
 
 #### Response
 ```javascript
@@ -156,7 +156,7 @@ API Spec
 }]
 ```
 
-### GET /comments/:comment_id
+### GET /api/comments/:comment_id
 
 #### Response
 ```javascript
@@ -168,7 +168,7 @@ API Spec
 }
 ```
 
-### PUT /comments/:comment_id
+### PUT /api/comments/:comment_id
 
 #### Parameters
 | name          | required  | type  | 
@@ -185,7 +185,7 @@ API Spec
 }
 ```
 
-### DELETE /comments/:comment_id
+### DELETE /api/comments/:comment_id
 
 #### Response
 ```javascript
