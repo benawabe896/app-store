@@ -104,6 +104,17 @@ API Spec
 }
 ```
 
+### POST /applications/:application_id/upload
+
+#### Response
+```javascript
+{
+  "message":"Binary uploaded!"
+}
+```
+
+### GET /applications/:application_id/download
+
 ### POST /applications/:application_id/comments
 
 #### Parameters
