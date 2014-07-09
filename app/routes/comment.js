@@ -29,6 +29,11 @@ module.exports = function(router){
         if(err) {
           return res.send(err);
         }
+        
+        if(!comment){
+          res.send({error: 'No comment found with that Id'});
+        }
+
 
         if(!req.body.description){
           return res.send({error: 'Missing required parameters'});

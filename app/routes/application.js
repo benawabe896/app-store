@@ -96,6 +96,10 @@ module.exports = function(router){
         if(err) {
           return res.send(err);
         }
+        
+        if(!application){
+          res.send({error: 'No application found with that Id'});
+        }
 
         application.name = req.body.name;
         req.body.description && (application.description = req.body.description);
