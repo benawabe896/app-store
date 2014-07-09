@@ -43,6 +43,12 @@ module.exports = function(router){
         return res.send({error: 'q parameter required'}); 
       }
 
+      // Sort Options
+      var sortBy = req.query.sortBy || 'name';
+      var sortParams = {};
+      sortParams[sortBy] = 'desc';
+
+      // Query Options
       var queryParams= {};
       var searchType = req.query.st || 'name';
       queryParams[searchType] = {$regex: new RegExp(req.query.q, 'i')};
@@ -61,7 +67,7 @@ module.exports = function(router){
         queryParams[searchType] = {$gte: ranges[0], $lt: ranges[1]};
       }
 
-      Application.find(queryParams, function(err, applications){
+      Application.find(queryParams).sort(sortBy).exec(function(err, applications){
         if (err) {
           return res.send(err);
         }
