@@ -1,6 +1,5 @@
 var Application = require('../models/application');
 var Comment = require('../models/comment');
-var fs = require('fs');
 
 module.exports = function(router){
   // Applications
@@ -8,7 +7,7 @@ module.exports = function(router){
     .post(function(req, res) {
       
       if(!req.body.name || !req.body.description || !req.body.author || !req.body.price){
-        res.send({error: 'Missing required parameter(s)'});
+        res.send({error: 'Missing required parameters'});
       }
 
       if(isNaN(req.body.price)){
@@ -118,30 +117,12 @@ module.exports = function(router){
       });
     });
 
-  // Application Upload
-  router.route('/applications/:application_id/upload')
-    .post(function (req, res) {
-        var fstream;
-        req.pipe(req.busboy);
-        req.busboy.on('file', function (fieldname, file) {
-            fstream = fs.createWriteStream(__dirname + '/data/' + req.params.application_id);
-            file.pipe(fstream);
-            fstream.on('close', function () {
-              res.json({ message: 'Binary uploaded!' });
-            });
-        });
-    });
-
-  // Application Download
-  router.route('/applications/:application_id/download')
-    .get(function(req, res) {
-      var file = __dirname + '/data/' + req.params.application_id;
-      res.download(file);
-    });
-
   // Application Comments
   router.route('/applications/:application_id/comments')
     .post(function(req, res) {
+      if(!req.body.description){
+        return res.send({error: 'Missing required parameters'});
+      }
 
       var comment = new Comment();
       comment.description = req.body.description;
