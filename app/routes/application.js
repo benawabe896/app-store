@@ -7,6 +7,14 @@ module.exports = function(router){
   router.route('/applications')
     .post(function(req, res) {
       
+      if(!req.body.name || !req.body.description || !req.body.author || !req.body.price){
+        res.send({error: 'Missing required parameter(s)'});
+      }
+
+      if(isNaN(req.body.price)){
+        res.send({error: 'Price is not a number'}); 
+      }
+
       var application = new Application();
       application.name = req.body.name;
       application.description = req.body.description;
@@ -32,20 +40,26 @@ module.exports = function(router){
   // Applications Search
   router.route('/applications/search')
     .get(function(req, res){
+      if(!req.query.q){
+        res.send({error: 'q parameter required'}); 
+      }
 
       var queryParams= {};
       var searchType = req.query.st || 'name';
-      switch(searchType){
-        case 'price':
-          var ranges = req.query.range.split('-');
-          queryParams[searchType] = {$gte: ranges[0], $lt: ranges[1]};
-          break;
-        case 'name':
-        case 'description':
-        case 'author':
-        case 'default':
-          queryParams[searchType] = {$regex: new RegExp(req.query.q, 'i')};
-          break;
+      queryParams[searchType] = {$regex: new RegExp(req.query.q, 'i')};
+
+      if(searchType === 'price'){
+        if(!req.query.range){
+          res.send({error: 'Range parameters required for price search type'}); 
+        }
+        var ranges = req.query.range.split('-').map(function(range){
+          return parseInt(range);
+        }).sort();
+
+        if(ranges.length !== 2 || isNaN(ranges[0]) || isNaN(ranges[1])){
+          res.send({error: 'Invalid Range Values'});
+        }
+        queryParams[searchType] = {$gte: ranges[0], $lt: ranges[1]};
       }
 
       Application.find(queryParams, function(err, applications){
@@ -65,10 +79,14 @@ module.exports = function(router){
           res.send(err);
         }
 
-        res.json(application);
+        res.json(application || {error: 'Appication Id not found'});
       });
     })
     .put(function(req, res) {
+      if(!req.body.name){
+        res.send({error: 'Missing required parameters'});
+      }
+
       Application.findById(req.params.application_id, function(err, application){
         if(err) {
           res.send(err);
