@@ -121,13 +121,65 @@ API Spec
 }
 ```
 
-### POST
-### GET
+### GET /applications/:application_id/comments
 
-## /comments
-### GET
+#### Response
+```javascript
+{
+  "__v":0,
+  "application_id":"53bc99b735e78500005ff250",
+  "description":"Test Comment",
+  "_id":"53bca4ad62acc3970a321162"
+}
+```
 
-## /comments/:comment_id
-### GET
-### PUT
+### GET /comments
+
+#### Response
+```javascript
+[{
+  "__v":0,
+  "application_id":"53bc99b735e78500005ff250",
+  "description":"Test Comment",
+  "_id":"53bca4ad62acc3970a321162"
+}]
+```
+
+### GET /comments/:comment_id
+
+#### Response
+```javascript
+{
+  "__v":0,
+  "application_id":"53bc99b735e78500005ff250",
+  "description":"Test Comment",
+  "_id":"53bca4ad62acc3970a321162"
+}
+```
+
+### PUT /comments/:comment_id
+
+#### Parameters
+| name          | required  | type  | 
+| ------------- |:-------------:| -----|  
+| description     | yes | String | 
+
+#### Response
+```javascript
+{
+  "__v":0,
+  "application_id":"53bc99b735e78500005ff250",
+  "description":"Test Comment",
+  "_id":"53bca4ad62acc3970a321162"
+}
+```
+
 ### DELETE
+
+#### Response
+```javascript
+{
+  "message":"Successfully deleted"
+}
+```
+
